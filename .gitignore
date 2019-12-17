@@ -4,3 +4,4 @@ modelos/*.h5
 pesos/
 videos/
 resultados/
+*.code-workspace
