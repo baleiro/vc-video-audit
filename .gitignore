@@ -3,4 +3,5 @@ projeto/imagens/
 projeto/modelos/*.h5
 projeto/pesos/
 projeto/videos/
+projetos/*ORIGINAL.ipynb
 *.code-workspace
