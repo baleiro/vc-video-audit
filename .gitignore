@@ -1,7 +1,6 @@
-testes/
-imagens/
-modelos/*.h5
-pesos/
-videos/
-resultados/
+projeto/testes/
+projeto/imagens/
+projeto/modelos/*.h5
+projeto/pesos/
+projeto/videos/
 *.code-workspace
