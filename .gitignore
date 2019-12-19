@@ -1,6 +1,5 @@
 projeto/testes/
 projeto/imagens/
-projeto/modelos/*.h5
 projeto/pesos/*.weights
 projeto/videos/
 projetos/*ORIGINAL.ipynb
