@@ -1,6 +1,7 @@
 projeto/testes/
 projeto/imagens/
-projeto/pesos/*.weights
+projeto/pesos/vgg_face_weights.h5
+projeto/pesos/yolov3.weights
 projeto/videos/
 projetos/*ORIGINAL.ipynb
 *.code-workspace
