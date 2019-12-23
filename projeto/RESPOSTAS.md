@@ -209,3 +209,199 @@ def padronizarROI(imagem):
     
     return imagem_pad
 
+19. ### Qual é a influência do parâmetro de confiança e supressão não máxima na performance do modelo?
+
+https://www.learnopencv.com/deep-learning-based-object-detection-using-yolov3-with-opencv-python-c/
+
+O parâmetro de confiança indica qual o valor minimo aceitavel para considerar o objeto identificado. O resultado do processamento do modelo é um percentual que indica a probabilidade da imagem conter um objeto. O parâmetro de confiança indica o valor minimo necessário que o percentual deve apresentar para considerar o objeto identificado.
+O parâmetro de supressão não máxima indica a forma de retirada dos "boxes" sobrepostos aos que continham a confiança minima desejada. O algoritmo divide a imagem em boxes de tamanho fixo. Para cada box é verificada a existência de objetos e qual a classe destes objetos. Na situação do box em verificação atualmente contenha parte de um outro box que tambem tenha identificado o objeto e a classe, porém apresente uma confiança maior que o atual, então o box atual é desconsiderado. Assim o algoritmo tem por objetivo manter o box com maior nivel de confiança na identificação do objeto na imagem.
+
+
+20. ### Implementação solicitada na rotina *obter_objetos*
+
+        # IMPLEMENTAR
+        item = {"objeto": imagem[y:y+h, x:x+w], "coordenadas": [], "tipo":labels[classIDs[i]], "confianca": confidences[i]}
+        
+        item["coordenadas"].append(np.array((int(x), int(y), int(w), int(h))))
+
+21. ### Lista de objeto para identificação no teste
+
+        lista_objetos = ["pessoa", "gravata"]
+
+22. ### Auditoria Automatica de Video - Lista de objetos
+
+        lista_objetos = ['tv', 'controle remoto', 'teclado', 'celular', 'computador portátil']
+
+23. ### Auditoria Automatica de Video - Código fonte
+
+        #cam.release()
+        cam = cv2.VideoCapture("videos/video-1.avi")
+
+        ## intervalo de feedback de processamento
+        contador = 0 
+
+        ## qtde de itens identificados
+        qtdeHomens = 0
+        qtdeMulheres = 0
+        qtdeObjetos = 0
+
+        ## confianca minima de identificaçao
+        minConfFaceH = 1.01
+        minConfFaceM = 1.01
+        minConfObj = 1.01
+
+        start_time = time.time()
+
+        ## flag para indicar o que sera processado
+        IDENTIFICAR_FACES = True
+        IDENTIFICAR_HOMENS = True
+        IDENTIFICAR_MULHERES = True
+        IDENTIFICAR_OBJETOS = True
+
+        ## confianca necessario de cada item a ser identificado
+        CONFIANCA_OBJETOS = 0.5
+        CONFIANCA_HOMENS = 0.995
+        CONFIANCA_MULHERES = 0.885
+
+        try:
+            while(True):
+                contador += 1
+                is_capturing, imagem = cam.read()
+                
+                if(contador == 1):
+                    print("começando")
+                    
+                if is_capturing:
+                    
+                    if((contador % 60) == 0):
+                        # print(contador)
+                        end_time = time.time()
+                        timer(start_time,end_time)
+                    
+                    if(IDENTIFICAR_FACES == True):
+                    
+                        if (IDENTIFICAR_HOMENS == True):
+                    
+                            # IMPLEMENTAR 1
+                            # Obter Faces
+                            faces = obterFaces(imagem, CONFIANCA_HOMENS) 
+
+                            for idx, face in enumerate(faces):
+
+                                # IMPLEMENTAR 2
+                                # Padronizar a imagem do rosto (ROI)
+                                # Obtenha a imagem do rosto da variável face e armazene em imagem_rosto
+                                # Depois utilize a função padronizarROI, com a variável imagem_rosto para obter
+                                # o rosto padronizado e armazenar em rosto_padronizado
+
+                                if(minConfFaceH > face["confianca"]):
+                                    minConfFaceH = face["confianca"]
+
+                                imagem_rosto = face["rosto"]
+
+                                rosto_padronizado = padronizarROI (imagem_rosto)
+
+                                # IMPLEMENTAR 3
+                                # Chame as funções para predizer gênero e idade com a imagem padronizada do rosto
+
+                                genero = predizerGenero (rosto_padronizado)
+
+                                idade = predizerIdade (rosto_padronizado)
+
+                                # IMPLEMENTAR 4
+                                # Estabeleça as regras de auditoria e salve as evidências (imagens) no diretório resultados
+                                # de acordo com o identificação (resultado/homem, resultado/mulher)
+                                # Cuidado para não sobrescrever as imagens
+
+                                if (genero=="Masculino") & (idade > 45):
+
+                                    print("Gênero: " + genero + ", idade: " + str(idade))
+
+                                    qtdeHomens += 1
+
+                                    cv2.imwrite("resultado/homem/" + str(qtdeHomens) + "_" + str(idade) + ".png", imagem_rosto)
+
+                        if (IDENTIFICAR_MULHERES == True):
+                    
+                            # IMPLEMENTAR 1
+                            # Obter Faces
+                            faces = obterFaces(imagem, CONFIANCA_MULHERES) 
+
+                            for idx, face in enumerate(faces):
+
+                                # IMPLEMENTAR 2
+                                # Padronizar a imagem do rosto (ROI)
+                                # Obtenha a imagem do rosto da variável face e armazene em imagem_rosto
+                                # Depois utilize a função padronizarROI, com a variável imagem_rosto para obter
+                                # o rosto padronizado e armazenar em rosto_padronizado
+
+                                if(minConfFaceM > face["confianca"]):
+                                    minConfFaceM = face["confianca"]
+
+                                imagem_rosto = face["rosto"]
+
+                                rosto_padronizado = padronizarROI (imagem_rosto)
+
+                                # IMPLEMENTAR 3
+                                # Chame as funções para predizer gênero e idade com a imagem padronizada do rosto
+
+                                genero = predizerGenero (rosto_padronizado)
+
+                                idade = predizerIdade (rosto_padronizado)
+
+                                # IMPLEMENTAR 4
+                                # Estabeleça as regras de auditoria e salve as evidências (imagens) no diretório resultados
+                                # de acordo com o identificação (resultado/homem, resultado/mulher)
+                                # Cuidado para não sobrescrever as imagens
+
+                                if (genero=="Feminino") & (idade < 45):
+
+                                    print("Gênero: " + genero + ", idade: " + str(idade))
+
+                                    qtdeMulheres += 1
+
+                                    cv2.imwrite("resultado/mulher/" + str(qtdeMulheres) + "_" + str(idade) + ".png", imagem_rosto)
+
+                                    
+                    if(IDENTIFICAR_OBJETOS == True):
+                    
+                        objetos = obter_objetos(imagem, lista_objetos, CONFIANCA_OBJETOS)
+
+                        # IMPLEMENTAR 5
+                        # Estabeleça as regras de auditoria e salve as evidências (imagens) no diretório resultados
+                        # de acordo com o identificação (resultado/objetos)
+                        # Cuidado para não sobrescrever as imagens
+
+                        if (len(objetos) > 0):
+
+                            for idx, obj in enumerate(objetos):
+
+                                if(minConfObj > obj["confianca"]):
+                                    minConfObj = obj["confianca"]
+
+                                imagem_objeto = obj["objeto"]
+
+                                qtdeObjetos += 1
+
+                                cv2.imwrite("resultado/objetos/" + str(qtdeObjetos) + "_" + obj["tipo"] + ".png", imagem_objeto)
+                            
+                else:
+                    break
+
+            cam.release()
+            
+            end_time = time.time()
+            timer(start_time,end_time)
+            
+            print("minConfFaceH = ", minConfFaceH)
+            print("minConfFaceM = ", minConfFaceM)
+            print("minConfObj = ", minConfObj)
+            
+            print("qtdeHomens = ", qtdeHomens)
+            print("qtdeMulheres = ", qtdeMulheres)
+            print("qtdeObjetos = ", qtdeObjetos)
+            
+        except KeyboardInterrupt:
+            cam.release()
+            print("Interrompido")
+            
