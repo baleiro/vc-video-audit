@@ -405,3 +405,27 @@ O parâmetro de supressão não máxima indica a forma de retirada dos "boxes" s
             cam.release()
             print("Interrompido")
             
+24. ### Considerações finais
+
+O projeto guiado de auditoria automatica de videos, apesar de apresentar um assunto denso, esta apresentado de forma objetiva com desafios diretos e com grau de dificuldade moderado.
+
+As dificuldades enfrentadas durante a implementação do projeto estão relacionadas a escolha do método de interpolação do resize, a parametros de métodos utilizados ao longo do script, a ajustes do nivel de confiança de identificação dos objetivos para alcançar o sucesso.
+
+O equipamento disponivel para a nossa equipe executar o treinamento dos modelos de redes neurais indicados, considerando o calculo de 4 épocas, foi de 7h45 para o modelo de predição de gênero e 8h30 para o modelo de predição de idade. O método de trabalho foi rodar o processo durante a noite e avaliar o resultado no dia seguinte. Evidentemente que este fato colabora para possuirmos uma experiência sobre a importância da utilização de recursos computacionais, em tempos de nuvem, desperdiçar tempo de processamento é muito oneroso.
+
+Sobre melhorias no processo, a primeira sugestão, que pode ser considerada antagônica ao comentário anterior, é implementar uma pesquisa de parametros para o método "compile" das redes neurais, para identificar se existem valores melhores que "adam" para otimizador e "categorical_crossentropy" para calculo do erro.
+
+A segunda sugestão esta relacionada a salvar os históricos dos modelos de rede neural para a apresentar o grafico de acurácia e erro. Para gerar os gráficos e comentários solicitados no trabalho, salvar apenas os modelos não permite re-criar os gráficos do histórico. Por isto, criamos no nosso script a variavel que indica se treinamos e gravamos o modelos e historico ou apenas fazemos a leitura dos mesmos.
+
+O nosso grupos decidiu aproveitar a liberdade proposta no item 4, identificação de faces, de forma mais ampla e escolhemos utilizar o metodo de identificação de faces 
+Single Shot MultiBox Detector(https://arxiv.org/abs/1512.02325), indicado no texto de comparação de métodos de detecção de faces(https://www.learnopencv.com/face-detection-opencv-dlib-and-deep-learning-c-python/). Este algoritmo utiliza imagens em tamanho 300x300, gerando uma incerteza inicial de como fazer o "encaixe" entre os modelos, uma vez que o tamanho das outras redes era de 224x224. A solução, evidentemente, foi fazer um resize na entrada do metodo obter_faces, para o tamanho necessário. É um resize adicional ao processo, com custo computacional, mas consideramos que os benefícios do algoritmo, justificam a escolha. Os benefícios deste metodo em comparação aos outros são:
+1. Execução em tempo real na CPU
+2. Deteção de faces em multiplas direções – para cima, para baixo, esquerda, direita, lateral
+3. Detecta mesmo com muita oclusão da face
+4. Detecta faces com muita amplitude no tamanho (desde de pequena ate grande)
+
+O script final de deteção automatica foi implementado para receber parametros de confianca determinados para os objetivos de face masculina, face feminina e objeto.
+A separação entre face masculina e feminina foi necessária devido ao elevado número de faces masculinas se comparado ao numero indicado para o sucesso. Foi necessário elevar a confiança para 99,5% para face masculina. A confiança da face feminina ficou parametrizada em 88,5%. O grupo acredita que a escolha do método de detecção de faces pode ser o causador deste elevado número de faces masculinas, uma vez que ele tende a detectar mais faces que os outros métodos propostos.
+
+Consideramos um trabalho final muito interessante, aonde acreditamos que aproveitamos a chance de criar uma solução alternativa para detecção de faces e agregar valor ao sugerir a gravação do historico do treinamento das redes neurais propostas. 
+
