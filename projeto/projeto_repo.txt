@@ -1,1 +1,3 @@
+O script resultado está dentro do diretorio projeto, com nome object-people-audit.ipynb.
+
 https://github.com/baleiro/vc-video-audit
