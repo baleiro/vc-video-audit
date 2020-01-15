@@ -3,5 +3,5 @@ projeto/imagens/
 projeto/pesos/vgg_face_weights.h5
 projeto/pesos/yolov3.weights
 projeto/videos/
-projetos/*ORIGINAL.ipynb
+projeto/*ORIGINAL.ipynb
 *.code-workspace

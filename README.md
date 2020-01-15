@@ -7,6 +7,11 @@
 
 ![alt text](./projeto/imagens-aux/grupo-gogene.png)
 
+* RM 334351 - Jefferson Dias
+* RM 334790 - Juliano Valadares
+* RM 334621 - Murilo Cervato
+* RM 333641 - Paulo Fernandes
+
 O script resultado está dentro do diretorio **projeto**, com nome **object-people-audit.ipynb**.
 
 Foi criada uma variável ***OPCAO_MODELO***, no início do script, para indicar se os modelos de rede neural serão treinados OU recuperados de treinamento anterior.
